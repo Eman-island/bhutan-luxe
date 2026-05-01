@@ -70,7 +70,7 @@ export default function Home() {
     startTransition(async () => {
       const result = await submitInquiry(fd);
       if (result.ok) {
-        setRefNumber(`2026-${Math.floor(1000 + Math.random() * 9000)}`);
+        setRefNumber(result.refCode ?? "");
         setDone(true);
       } else {
         setError(result.error ?? "Something went wrong. Please try again.");
@@ -768,7 +768,7 @@ export default function Home() {
                     will respond personally — by phone, if you&apos;ve shared a
                     number, otherwise by email.
                   </p>
-                  <div className="ref">Reference · BL-{refNumber}</div>
+                  <div className="ref">Reference · {refNumber}</div>
                 </div>
               )}
             </form>
