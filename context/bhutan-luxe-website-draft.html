@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bhutan-Luxe — The Bhutan Few Will Ever See</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --saffron: #FF8C00;
+      --crimson: #C41E3A;
+      --forest:  #2D5016;
+      --cloud:   #F7F5F0;
+      --stone:   #3B3A36;
+      --gold:    #D4A843;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cloud);
+      color: var(--stone);
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    h1, h2, h3 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+
+    .label {
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      background: var(--saffron);
+      color: var(--cloud);
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 14px 32px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-primary:hover { background: var(--crimson); }
+
+    .btn-secondary {
+      display: inline-block;
+      background: transparent;
+      color: var(--stone);
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 13px 28px;
+      text-decoration: none;
+      border: 1px solid var(--gold);
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn-secondary:hover { background: var(--stone); color: var(--cloud); }
+
+    /* ── 1. HERO ── */
+    #hero {
+      position: relative;
+      height: 100vh;
+      min-height: 600px;
+      background: url('https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=1920&q=80') center / cover no-repeat;
+      display: flex;
+      align-items: flex-end;
+      padding-bottom: 80px;
+    }
+    #hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(59, 58, 54, 0.45);
+    }
+    #hero .hero-content {
+      position: relative;
+      z-index: 1;
+      padding: 0 60px;
+    }
+    #hero .eyebrow {
+      color: var(--gold);
+      display: block;
+      margin-bottom: 16px;
+    }
+    #hero h1 {
+      font-size: 52px;
+      color: var(--cloud);
+      line-height: 1.15;
+      max-width: 640px;
+      margin-bottom: 36px;
+    }
+
+    /* ── 2. THE DESIRE ── */
+    #desire {
+      padding: 120px 0;
+      background: var(--stone);
+    }
+    #desire .inner {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 40px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    #desire .desire-image {
+      aspect-ratio: 3 / 4;
+      background: url('https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86?w=800&q=80') center / cover no-repeat;
+    }
+    #desire .desire-text .label {
+      color: var(--gold);
+      display: block;
+      margin-bottom: 24px;
+    }
+    #desire h2 {
+      font-size: 38px;
+      color: var(--cloud);
+      line-height: 1.2;
+      margin-bottom: 28px;
+    }
+    #desire p {
+      color: rgba(247, 245, 240, 0.75);
+      margin-bottom: 20px;
+      font-size: 16px;
+    }
+    #desire .stat-row {
+      display: flex;
+      gap: 48px;
+      margin-top: 48px;
+      padding-top: 40px;
+      border-top: 1px solid var(--gold);
+    }
+    #desire .stat .number {
+      font-family: 'Playfair Display', serif;
+      font-size: 36px;
+      color: var(--saffron);
+      display: block;
+      line-height: 1.1;
+    }
+    #desire .stat .desc {
+      font-size: 11px;
+      color: rgba(247, 245, 240, 0.5);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    /* ── 3. EXPERIENCE TIERS ── */
+    #tiers {
+      padding: 120px 0;
+      background: var(--cloud);
+    }
+    #tiers .section-header {
+      margin-bottom: 64px;
+    }
+    #tiers .section-header .label {
+      color: var(--forest);
+      display: block;
+      margin-bottom: 16px;
+    }
+    #tiers .section-header h2 {
+      font-size: 40px;
+      color: var(--stone);
+    }
+    .tier-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      background: var(--gold);
+    }
+    .tier-card {
+      background: var(--cloud);
+      display: flex;
+      flex-direction: column;
+    }
+    .tier-card .card-image {
+      aspect-ratio: 3 / 2;
+      background-size: cover;
+      background-position: center;
+    }
+    .tier-card .card-body {
+      padding: 32px 28px 40px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .tier-card .tier-label {
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--saffron);
+      margin-bottom: 10px;
+    }
+    .tier-card h3 {
+      font-size: 24px;
+      color: var(--stone);
+      margin-bottom: 6px;
+    }
+    .tier-card .price {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      color: var(--forest);
+      margin-bottom: 18px;
+      letter-spacing: 0.04em;
+    }
+    .tier-card p {
+      font-size: 14px;
+      line-height: 1.65;
+      color: var(--stone);
+      opacity: 0.8;
+      flex: 1;
+      margin-bottom: 28px;
+    }
+    .tier-card .btn-secondary {
+      align-self: flex-start;
+      font-size: 10px;
+    }
+    #tiers .bespoke-note {
+      margin-top: 40px;
+      font-size: 14px;
+      color: var(--stone);
+      opacity: 0.6;
+      max-width: 640px;
+      line-height: 1.7;
+    }
+
+    /* ── 4. TRUST ── */
+    #trust {
+      padding: 120px 0;
+      background: var(--forest);
+    }
+    #trust .section-header {
+      margin-bottom: 64px;
+    }
+    #trust .section-header .label {
+      color: var(--gold);
+      display: block;
+      margin-bottom: 16px;
+    }
+    #trust .section-header h2 {
+      font-size: 38px;
+      color: var(--cloud);
+      max-width: 520px;
+    }
+    .trust-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      background: var(--gold);
+      margin-bottom: 80px;
+    }
+    .trust-block {
+      background: var(--forest);
+      padding: 48px 40px;
+    }
+    .trust-block .quote-mark {
+      font-family: 'Playfair Display', serif;
+      font-size: 64px;
+      line-height: 1;
+      color: var(--saffron);
+      margin-bottom: 12px;
+    }
+    .trust-block blockquote {
+      font-family: 'Playfair Display', serif;
+      font-size: 17px;
+      font-style: italic;
+      color: var(--cloud);
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+    .trust-block cite {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-style: normal;
+    }
+    .trust-partner {
+      padding-top: 60px;
+      border-top: 1px solid rgba(212, 168, 67, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 48px;
+    }
+    .trust-partner p {
+      color: rgba(247, 245, 240, 0.65);
+      font-size: 15px;
+      flex: 1;
+    }
+    .trust-partner a {
+      color: var(--gold);
+      text-decoration: none;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .trust-partner a:hover { color: var(--saffron); }
+
+    /* ── 5. INQUIRY FORM ── */
+    #inquiry {
+      padding: 120px 0;
+      background: var(--cloud);
+    }
+    #inquiry .section-header {
+      margin-bottom: 64px;
+      max-width: 560px;
+    }
+    #inquiry .section-header .label {
+      color: var(--forest);
+      display: block;
+      margin-bottom: 16px;
+    }
+    #inquiry .section-header h2 {
+      font-size: 38px;
+      color: var(--stone);
+      margin-bottom: 16px;
+    }
+    #inquiry .section-header p {
+      color: var(--stone);
+      opacity: 0.65;
+    }
+    .inquiry-form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px 40px;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .form-group.full-width { grid-column: 1 / -1; }
+    .form-group label {
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--stone);
+      opacity: 0.55;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--gold);
+      padding: 10px 0;
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      color: var(--stone);
+      outline: none;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder { color: rgba(59, 58, 54, 0.3); }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus { border-bottom-color: var(--crimson); }
+    .form-group textarea { resize: none; height: 80px; }
+    .form-group select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%233B3A36' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 4px center;
+      padding-right: 24px;
+      cursor: pointer;
+    }
+    .form-group select option { background: var(--cloud); }
+    .form-submit { grid-column: 1 / -1; margin-top: 8px; }
+    .form-note {
+      grid-column: 1 / -1;
+      font-size: 12px;
+      color: var(--stone);
+      opacity: 0.45;
+      line-height: 1.6;
+    }
+
+    /* ── 6. FOOTER ── */
+    footer {
+      background: var(--stone);
+      padding: 60px 0;
+      border-top: 1px solid rgba(212, 168, 67, 0.4);
+    }
+    footer .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 40px;
+    }
+    footer .footer-brand h3 {
+      font-size: 22px;
+      color: var(--cloud);
+      margin-bottom: 6px;
+    }
+    footer .footer-brand p {
+      font-size: 11px;
+      color: rgba(247, 245, 240, 0.35);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    footer .footer-contact { text-align: right; }
+    footer .footer-contact a {
+      display: block;
+      color: var(--gold);
+      text-decoration: none;
+      font-size: 13px;
+      margin-bottom: 10px;
+      letter-spacing: 0.04em;
+    }
+    footer .footer-contact a:hover { color: var(--saffron); }
+    footer .footer-contact .privacy-note {
+      font-size: 11px;
+      color: rgba(247, 245, 240, 0.28);
+      margin-top: 20px;
+      max-width: 260px;
+      line-height: 1.6;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      #hero h1 { font-size: 34px; }
+      #hero .hero-content { padding: 0 24px; }
+      #desire .inner { grid-template-columns: 1fr; padding: 0 24px; }
+      #desire .desire-image { display: none; }
+      #desire .stat-row { flex-wrap: wrap; gap: 28px; }
+      .tier-grid { grid-template-columns: 1fr; }
+      .trust-grid { grid-template-columns: 1fr; }
+      .trust-partner { flex-direction: column; gap: 24px; }
+      .inquiry-form { grid-template-columns: 1fr; }
+      .form-group.full-width,
+      .form-submit,
+      .form-note { grid-column: 1; }
+      footer .container { flex-direction: column; }
+      footer .footer-contact { text-align: left; }
+      footer .footer-contact .privacy-note { max-width: 100%; }
+      .container { padding: 0 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── 1. HERO ── -->
+  <section id="hero">
+    <div class="hero-content">
+      <span class="label eyebrow">Bhutan-Luxe</span>
+      <h1>The Bhutan Few<br>Will Ever See.</h1>
+      <a href="#inquiry" class="btn-primary">Request Access</a>
+    </div>
+  </section>
+
+  <!-- ── 2. THE DESIRE ── -->
+  <section id="desire">
+    <div class="inner">
+      <div class="desire-image"></div>
+      <div class="desire-text">
+        <span class="label">Why Bhutan. Why Now.</span>
+        <h2>You have been<br>everywhere.<br>Bhutan is<br>the exception.</h2>
+        <p>Most destinations have been discovered, packaged, and sold. Bhutan has not. Strict visitor limits, no public land transport into the interior, and a culture that has never chased tourism mean the country remains, in most places, exactly as it was.</p>
+        <p>Three valleys in eastern Bhutan have no roads, no lodges, no cell signal. We access them by helicopter. You can be among the first outsiders to set foot there.</p>
+        <div class="stat-row">
+          <div class="stat">
+            <span class="number">8</span>
+            <span class="desc">Guests per departure</span>
+          </div>
+          <div class="stat">
+            <span class="number">3</span>
+            <span class="desc">Tiers of access</span>
+          </div>
+          <div class="stat">
+            <span class="number">1</span>
+            <span class="desc">Partner on the ground</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 3. EXPERIENCE TIERS ── -->
+  <section id="tiers">
+    <div class="container">
+      <div class="section-header">
+        <span class="label">Experience Tiers</span>
+        <h2>Choose your<br>level of access.</h2>
+      </div>
+      <div class="tier-grid">
+
+        <div class="tier-card">
+          <div class="card-image" style="background-image: url('https://images.unsplash.com/photo-1580674684081-7617fbf3d745?w=800&q=80')"></div>
+          <div class="card-body">
+            <span class="tier-label">Tier One</span>
+            <h3>Luxe</h3>
+            <p class="price">$8,000 – $12,000 &nbsp;·&nbsp; 7 days</p>
+            <p>Cultural immersion, monastery visits, and luxury lodge stays. An accessible entry point into Bhutan's most celebrated landmarks, with white-glove execution throughout.</p>
+            <a href="#inquiry" class="btn-secondary">Request Details</a>
+          </div>
+        </div>
+
+        <div class="tier-card">
+          <div class="card-image" style="background-image: url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&q=80')"></div>
+          <div class="card-body">
+            <span class="tier-label">Tier Two</span>
+            <h3>Boutique-Luxe</h3>
+            <p class="price">$12,000 – $25,000 &nbsp;·&nbsp; 10 days</p>
+            <p>Gateway access to remote valleys, private ceremonies, and wild glamping in locations unavailable through any other operator. A journey between two worlds.</p>
+            <a href="#inquiry" class="btn-secondary">Request Details</a>
+          </div>
+        </div>
+
+        <div class="tier-card">
+          <div class="card-image" style="background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80')"></div>
+          <div class="card-body">
+            <span class="tier-label">Tier Three</span>
+            <h3>Ultra-Luxe</h3>
+            <p class="price">$25,000 – $35,000+ &nbsp;·&nbsp; 10 days</p>
+            <p>Fully customized. Helicopter access to trailless regions. Private audiences unavailable through any other channel. Designed for those for whom access itself is the luxury.</p>
+            <a href="#inquiry" class="btn-secondary">Request Details</a>
+          </div>
+        </div>
+
+      </div>
+      <p class="bespoke-note">We also collaborate directly with you and our affiliate partner in Bhutan to design a fully bespoke itinerary — spiritual, outdoor, cultural, or otherwise. Mention this in your inquiry.</p>
+    </div>
+  </section>
+
+  <!-- ── 4. TRUST ── -->
+  <section id="trust">
+    <div class="container">
+      <div class="section-header">
+        <span class="label">Why Bhutan-Luxe</span>
+        <h2>Access earned over years.<br>Not purchased.</h2>
+      </div>
+      <div class="trust-grid">
+        <div class="trust-block">
+          <div class="quote-mark">"</div>
+          <blockquote>I have traveled to over sixty countries. Nothing prepared me for what we saw in the eastern valleys. I don't know that I'll travel anywhere else the same way again.</blockquote>
+          <cite>— Dallas, TX &nbsp;·&nbsp; Ultra-Luxe guest, 2025</cite>
+        </div>
+        <div class="trust-block">
+          <div class="quote-mark">"</div>
+          <blockquote>The discretion was absolute. Every detail was arranged before we arrived. We simply showed up and experienced it.</blockquote>
+          <cite>— Houston, TX &nbsp;·&nbsp; Boutique-Luxe guest, 2025</cite>
+        </div>
+      </div>
+      <div class="trust-partner">
+        <p>Our affiliate partner on the ground in Bhutan holds relationships that took more than a decade to establish — with local authorities, monastery administrators, and helicopter operators. Those relationships are what make our access possible.</p>
+        <a href="https://www.mybhutan.com/" target="_blank" rel="noopener">mybhutan.com &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 5. INQUIRY FORM ── -->
+  <section id="inquiry">
+    <div class="container">
+      <div class="section-header">
+        <span class="label">Begin Your Inquiry</span>
+        <h2>This is a concierge<br>inquiry, not a booking.</h2>
+        <p>We respond within 48 hours. Every inquiry is handled personally.</p>
+      </div>
+      <form class="inquiry-form" action="#" method="POST">
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" name="name" autocomplete="name">
+        </div>
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" autocomplete="email">
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <input type="tel" id="phone" name="phone" autocomplete="tel">
+        </div>
+        <div class="form-group">
+          <label for="tier">Experience Tier</label>
+          <select id="tier" name="tier">
+            <option value="" disabled selected>Select a tier</option>
+            <option value="luxe">Luxe — $8,000 – $12,000</option>
+            <option value="boutique-luxe">Boutique-Luxe — $12,000 – $25,000</option>
+            <option value="ultra-luxe">Ultra-Luxe — $25,000 – $35,000+</option>
+            <option value="bespoke">Bespoke — Let's discuss</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="window">Preferred Travel Window</label>
+          <input type="text" id="window" name="window" placeholder="e.g. Spring 2026, flexible">
+        </div>
+        <div class="form-group">
+          <label for="group">Group Size</label>
+          <input type="number" id="group" name="group" min="1" max="8" placeholder="1 – 8 guests">
+        </div>
+        <div class="form-group full-width">
+          <label for="notes">Anything else we should know</label>
+          <textarea id="notes" name="notes" placeholder="Interests, requirements, questions — optional"></textarea>
+        </div>
+        <div class="form-submit">
+          <button type="submit" class="btn-primary">Submit Inquiry</button>
+        </div>
+        <p class="form-note">Your information is held in strict confidence and is never shared. We do not send marketing communications without your consent.</p>
+      </form>
+    </div>
+  </section>
+
+  <!-- ── 6. FOOTER ── -->
+  <footer>
+    <div class="container">
+      <div class="footer-brand">
+        <h3>Bhutan-Luxe</h3>
+        <p>The Bhutan Few Will Ever See</p>
+      </div>
+      <div class="footer-contact">
+        <a href="mailto:Rare.Bhutan@bhutan-luxe.com">Rare.Bhutan@bhutan-luxe.com</a>
+        <a href="https://wa.me/" target="_blank" rel="noopener">WhatsApp</a>
+        <p class="privacy-note">All inquiries are handled with complete discretion. No data is shared with third parties.</p>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
