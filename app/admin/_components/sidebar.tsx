@@ -16,9 +16,11 @@ const NAV = [
 export function Sidebar({
   userEmail,
   inquiryCount,
+  affiliateCount,
 }: {
   userEmail: string;
   inquiryCount?: number;
+  affiliateCount?: number;
 }) {
   const pathname = usePathname();
   return (
@@ -43,6 +45,8 @@ export function Sidebar({
             <span>{n.label}</span>
             {n.label === "Inquiries" && typeof inquiryCount === "number" ? (
               <span className="count">{inquiryCount}</span>
+            ) : n.label === "Affiliates" && typeof affiliateCount === "number" ? (
+              <span className="count">{affiliateCount}</span>
             ) : null}
           </Link>
         ))}

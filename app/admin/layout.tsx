@@ -23,14 +23,24 @@ export default async function AdminLayout({
     return <div className="concierge-body">{children}</div>;
   }
 
-  const { count } = await supabase
-    .from("inquiries")
-    .select("id", { count: "exact", head: true })
-    .neq("status", "lost");
+  const [inquiryRes, affiliateRes] = await Promise.all([
+    supabase
+      .from("inquiries")
+      .select("id", { count: "exact", head: true })
+      .neq("status", "lost"),
+    supabase
+      .from("affiliates")
+      .select("id", { count: "exact", head: true })
+      .eq("active", true),
+  ]);
 
   return (
     <div className="concierge-body concierge-shell">
-      <Sidebar userEmail={user.email ?? ""} inquiryCount={count ?? 0} />
+      <Sidebar
+        userEmail={user.email ?? ""}
+        inquiryCount={inquiryRes.count ?? 0}
+        affiliateCount={affiliateRes.count ?? 0}
+      />
       <main className="concierge-main">{children}</main>
     </div>
   );

@@ -55,6 +55,99 @@ export async function updateInquiryStatus(id: string, nextStatus: string) {
   return { ok: true };
 }
 
+export interface UpdateInquiryFields {
+  person_name?: string;
+  person_phone?: string;
+  person_city?: string;
+  tier?: string;
+  travel_window?: string;
+  group_size?: number | null;
+  notes?: string;
+  affiliate_id?: string | null;
+  deal_value_cents?: number | null;
+}
+
+export async function updateInquiry(
+  id: string,
+  fields: UpdateInquiryFields,
+) {
+  const { supabase, actor } = await getActor();
+  const { data: existing, error: readError } = await supabase
+    .from("inquiries")
+    .select("id, person_id, affiliate_id, tier, travel_window, group_size, notes, deal_value_cents")
+    .eq("id", id)
+    .single();
+  if (readError || !existing) {
+    return { ok: false, error: "Inquiry not found" };
+  }
+
+  // Person update (name, phone, city) — only if any provided
+  const personUpdate: Record<string, unknown> = {};
+  if (fields.person_name !== undefined) personUpdate.name = fields.person_name.trim() || null;
+  if (fields.person_phone !== undefined) personUpdate.phone = fields.person_phone.trim() || null;
+  if (fields.person_city !== undefined) personUpdate.city = fields.person_city.trim() || null;
+  if (Object.keys(personUpdate).length && existing.person_id) {
+    const { error } = await supabase
+      .from("people")
+      .update(personUpdate)
+      .eq("id", existing.person_id);
+    if (error) return { ok: false, error: error.message };
+  }
+
+  // Inquiry update
+  const inquiryUpdate: Record<string, unknown> = {};
+  const tierIsValidOrEmpty =
+    fields.tier === undefined ||
+    fields.tier === "" ||
+    ["luxe", "boutique-luxe", "ultra-luxe", "bespoke"].includes(fields.tier);
+  if (!tierIsValidOrEmpty) return { ok: false, error: "Invalid tier" };
+  if (fields.tier !== undefined) inquiryUpdate.tier = fields.tier || null;
+  if (fields.travel_window !== undefined) inquiryUpdate.travel_window = fields.travel_window.trim() || null;
+  if (fields.group_size !== undefined) inquiryUpdate.group_size = fields.group_size;
+  if (fields.notes !== undefined) inquiryUpdate.notes = fields.notes.trim() || null;
+  if (fields.affiliate_id !== undefined) inquiryUpdate.affiliate_id = fields.affiliate_id;
+  if (fields.deal_value_cents !== undefined) inquiryUpdate.deal_value_cents = fields.deal_value_cents;
+
+  if (Object.keys(inquiryUpdate).length) {
+    const { error } = await supabase
+      .from("inquiries")
+      .update(inquiryUpdate)
+      .eq("id", id);
+    if (error) return { ok: false, error: error.message };
+
+    // Activity log: capture diffs
+    const changes: Record<string, { from: unknown; to: unknown }> = {};
+    if (fields.tier !== undefined && fields.tier !== existing.tier) {
+      changes.tier = { from: existing.tier, to: fields.tier || null };
+    }
+    if (fields.travel_window !== undefined && fields.travel_window.trim() !== existing.travel_window) {
+      changes.travel_window = { from: existing.travel_window, to: fields.travel_window.trim() || null };
+    }
+    if (fields.group_size !== undefined && fields.group_size !== existing.group_size) {
+      changes.group_size = { from: existing.group_size, to: fields.group_size };
+    }
+    if (fields.affiliate_id !== undefined && fields.affiliate_id !== existing.affiliate_id) {
+      changes.affiliate_id = { from: existing.affiliate_id, to: fields.affiliate_id };
+    }
+    if (fields.deal_value_cents !== undefined && fields.deal_value_cents !== existing.deal_value_cents) {
+      changes.deal_value_cents = { from: existing.deal_value_cents, to: fields.deal_value_cents };
+    }
+    if (Object.keys(changes).length) {
+      await supabase.from("activity_log").insert({
+        inquiry_id: id,
+        person_id: existing.person_id,
+        action: "edited",
+        details: { changes },
+        actor_email: actor,
+      });
+    }
+  }
+
+  revalidatePath("/admin");
+  revalidatePath("/admin/affiliates");
+  return { ok: true };
+}
+
 export async function addInquiryNote(id: string, text: string) {
   const trimmed = text.trim();
   if (!trimmed) return { ok: false, error: "Note cannot be empty" };

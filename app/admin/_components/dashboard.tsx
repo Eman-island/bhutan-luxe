@@ -6,6 +6,7 @@ import { KanbanBoard } from "./kanban";
 import { ManualEntryModal } from "./manual-entry-modal";
 import { StageBadge, TierBadge } from "./badges";
 import {
+  type Affiliate,
   type InquiryRow,
   TIER_OPTIONS,
   formatRelative,
@@ -16,8 +17,10 @@ type TierFilter = "" | "luxe" | "boutique-luxe" | "ultra-luxe" | "bespoke";
 
 export function ConciergeDashboard({
   inquiries,
+  affiliates,
 }: {
   inquiries: InquiryRow[];
+  affiliates: Affiliate[];
 }) {
   const [view, setView] = useState<View>("list");
   const [tierFilter, setTierFilter] = useState<TierFilter>("");
@@ -188,6 +191,7 @@ export function ConciergeDashboard({
         id={drawerId}
         open={drawerId !== null}
         onClose={() => setDrawerId(null)}
+        affiliates={affiliates}
       />
       <ManualEntryModal open={modalOpen} onClose={() => setModalOpen(false)} />
     </>

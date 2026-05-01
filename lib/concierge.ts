@@ -35,6 +35,10 @@ export interface InquiryRow {
   person_name: string | null;
   person_phone: string | null;
   person_city: string | null;
+  affiliate_id: string | null;
+  affiliate_code: string | null;
+  affiliate_name: string | null;
+  deal_value_cents: number | null;
 }
 
 export interface ActivityEntry {
@@ -45,6 +49,77 @@ export interface ActivityEntry {
   details: Record<string, unknown> | null;
   actor_email: string | null;
   created_at: string;
+}
+
+
+export const PARTNER_TYPE_OPTIONS = [
+  { id: "concierge", label: "Concierge service" },
+  { id: "wealth_manager", label: "Wealth manager" },
+  { id: "lifestyle", label: "Lifestyle advisor" },
+  { id: "travel_co", label: "Travel company" },
+  { id: "hotel", label: "Hotel / property" },
+  { id: "personal", label: "Personal referrer" },
+  { id: "other", label: "Other" },
+] as const;
+
+export const PARTNER_TYPE_LABEL: Record<string, string> = Object.fromEntries(
+  PARTNER_TYPE_OPTIONS.map((p) => [p.id, p.label]),
+);
+
+export interface Affiliate {
+  id: string;
+  code: string;
+  name: string;
+  partner_type: string;
+  organization: string | null;
+  contact_email: string | null;
+  contact_phone: string | null;
+  default_commission_pct: number;
+  active: boolean;
+  notes: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface AffiliateWithStats extends Affiliate {
+  referrals_total: number;
+  referrals_won: number;
+  commission_pending_cents: number;
+  commission_paid_cents: number;
+  commission_total_cents: number;
+}
+
+export interface AffiliateCommission {
+  id: string;
+  affiliate_id: string;
+  inquiry_id: string | null;
+  status: "pending" | "paid" | "cancelled";
+  gross_cents: number;
+  commission_pct: number;
+  commission_cents: number;
+  payout_id: string | null;
+  notes: string | null;
+  created_at: string;
+}
+
+export interface AffiliatePayout {
+  id: string;
+  affiliate_id: string;
+  amount_cents: number;
+  method: string | null;
+  reference: string | null;
+  paid_at: string;
+  notes: string | null;
+  created_at: string;
+}
+
+export function formatUSD(cents: number | null | undefined): string {
+  if (cents == null) return "—";
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    maximumFractionDigits: 0,
+  }).format(cents / 100);
 }
 
 export const TIER_LABEL: Record<string, string> = {
