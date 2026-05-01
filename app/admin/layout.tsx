@@ -1,10 +1,10 @@
 import "../globals.css";
-import "./admin.css";
+import "./concierge.css";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
-import { signOut } from "./actions";
+import { Sidebar } from "./_components/sidebar";
 
 export const metadata = {
-  title: "Admin · Bhutan-Luxe",
+  title: "The Concierge · Bhutan-Luxe",
   robots: { index: false, follow: false },
 };
 
@@ -19,24 +19,19 @@ export default async function AdminLayout({
   } = await supabase.auth.getUser();
 
   if (!user) {
-    // Login page renders bare (middleware also redirects unauthed away from non-login paths).
-    return <div className="admin-body">{children}</div>;
+    // Login page — bare frame, no sidebar.
+    return <div className="concierge-body">{children}</div>;
   }
 
+  const { count } = await supabase
+    .from("inquiries")
+    .select("id", { count: "exact", head: true })
+    .neq("status", "lost");
+
   return (
-    <div className="admin-body admin-shell">
-      <header className="admin-header">
-        <span className="admin-brand">Bhutan-Luxe Admin</span>
-        <div className="admin-meta">
-          <span className="admin-user">{user.email}</span>
-          <form action={signOut}>
-            <button type="submit" className="admin-signout">
-              Sign out
-            </button>
-          </form>
-        </div>
-      </header>
-      <main className="admin-main">{children}</main>
+    <div className="concierge-body concierge-shell">
+      <Sidebar userEmail={user.email ?? ""} inquiryCount={count ?? 0} />
+      <main className="concierge-main">{children}</main>
     </div>
   );
 }

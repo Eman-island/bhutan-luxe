@@ -786,8 +786,8 @@ export default function Home() {
             </div>
             <div className="col">
               <h5>Contact</h5>
-              <a href="mailto:Rare.Bhutan@bhutan-luxe.com">
-                Rare.Bhutan@bhutan-luxe.com
+              <a href="mailto:concierge@bhutan-luxe.com">
+                concierge@bhutan-luxe.com
               </a>
               <a
                 href="https://wa.me/84937302252"

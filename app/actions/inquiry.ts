@@ -26,12 +26,6 @@ const ALLOWED_TIERS = new Set([
   "",
 ]);
 
-function generateRefCode(): string {
-  const year = new Date().getFullYear();
-  const seq = Math.floor(1000 + Math.random() * 9000);
-  return `BL-${year}-${seq}`;
-}
-
 export async function submitInquiry(
   formData: FormData,
 ): Promise<InquiryResult> {
@@ -52,43 +46,43 @@ export async function submitInquiry(
     return { ok: false, error: "Please choose a tier." };
   }
 
-  const refCode = generateRefCode();
-
   const supabase = createAdminClient();
-  const { data, error } = await supabase
-    .from("inquiries")
-    .insert({
-      name: payload.name,
-      email: payload.email.toLowerCase(),
-      phone: payload.phone || null,
-      tier: payload.tier || null,
-      travel_window: payload.travelWindow || null,
-      group_size: payload.groupSize ? Number(payload.groupSize) : null,
-      notes: payload.notes || null,
-      ref_code: refCode,
-      source: "website",
-    })
-    .select("id, ref_code")
-    .single();
+  const { data, error } = await supabase.rpc("submit_inquiry", {
+    p_name: payload.name,
+    p_email: payload.email.toLowerCase(),
+    p_phone: payload.phone || null,
+    p_tier: payload.tier || null,
+    p_travel_window: payload.travelWindow || null,
+    p_group_size: payload.groupSize ? Number(payload.groupSize) : null,
+    p_notes: payload.notes || null,
+    p_type: "inquiry",
+    p_source: "website",
+    p_ref_code: null,
+  });
 
   if (error) {
-    console.error("[inquiry-insert-failed]", { error, email: payload.email });
+    console.error("[inquiry-rpc-failed]", { error, email: payload.email });
     return {
       ok: false,
       error:
-        "We couldn't save your inquiry. Please try again, or email Rare.Bhutan@bhutan-luxe.com directly.",
+        "We couldn't save your inquiry. Please try again, or email concierge@bhutan-luxe.com directly.",
     };
   }
 
+  // RPC returns table; supabase-js returns array. Pick first row.
+  const row = Array.isArray(data) ? data[0] : data;
+  const refCode: string | undefined = row?.ref_code;
+
   console.log("[inquiry-saved]", {
-    id: data?.id,
-    ref: data?.ref_code,
+    inquiry_id: row?.inquiry_id,
+    ref: refCode,
     tier: payload.tier,
     email: payload.email,
   });
 
-  // TODO(post-MVP): notify Eric via Resend at eric@bhutan-luxe.com with WhatsApp
-  // click-to-chat link (https://wa.me/<buyer-phone>) once Resend is wired.
+  // TODO(post-MVP): notify Eric via Resend at concierge@bhutan-luxe.com
+  // (forwards to eric@bhutan-luxe.com) with a wa.me/<buyer-phone> click-to-chat
+  // link in the body.
 
-  return { ok: true, refCode: data?.ref_code ?? refCode };
+  return { ok: true, refCode };
 }
