@@ -56,7 +56,7 @@ img { display:block; max-width:100%; }
 
 /* ── HERO full-bleed ── */
 #hero {
-  position: relative; min-height: 100vh;
+  position: relative;
   background: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=2200&q=80') center/cover no-repeat;
   color: var(--cloud);
   overflow: hidden;
@@ -67,9 +67,11 @@ img { display:block; max-width:100%; }
     linear-gradient(180deg, rgba(59,58,54,0.55) 0, rgba(59,58,54,0) 30%, rgba(59,58,54,0) 60%, rgba(59,58,54,0.85) 100%);
 }
 #hero .frame {
-  position: absolute; inset: 0;
+  position: relative;
+  min-height: 100vh;
   padding: 140px 56px 64px;
-  display:grid; grid-template-rows: 1fr auto;
+  display: grid; grid-template-rows: 1fr auto;
+  gap: 64px;
   z-index: 1;
 }
 #hero .center {
